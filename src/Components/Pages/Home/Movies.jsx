@@ -9,7 +9,7 @@ const FeatureCards = () => {
 
   return (
     <div className="container">
-      <Row xs={1} md={3} className="g-4">
+      <Row xs={1} lg={3} md={2} className="g-4">
         {movies.map((movie) => (
           <Col key={movie.show.id}>
             <MovieCard movie={movie}></MovieCard>
