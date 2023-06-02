@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { Link, ScrollRestoration, useParams } from "react-router-dom";
-import useDataFetch from "../../../Hooks/useDataFetch";
-import Button from "react-bootstrap/Button";
-import Form from "react-bootstrap/Form";
+import { v4 as uuidv4 } from 'uuid';
 import Modal from "react-bootstrap/Modal";
 import Swal from "sweetalert2";
-import AOS from 'aos';
-import 'aos/dist/aos.css';
+import AOS from "aos";
+import "aos/dist/aos.css";
+import { addFakeDb } from "../../../Utilits/FakeDb";
 const MovieDetails = () => {
   AOS.init();
+  const uniqueId = uuidv4();
+  console.log(uniqueId);
   const { id } = useParams();
   const [movie, setMovies] = useState({});
   useEffect(() => {
@@ -44,9 +45,32 @@ const MovieDetails = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     // Add code here to handle form submission
-    formData.id = movie.id;
-    const booKedMovie = formData;
-    localStorage.setItem("bookedItem", JSON.stringify(booKedMovie));
+
+    const {
+      firstName,
+      lastName,
+      numTickets,
+      phone,
+      email,
+      dateTime,
+      comments,
+    } = formData;
+    const fullName = firstName + " " + lastName;
+    const bookedItem = {
+      movieName:movie?.name,
+      fullName,
+      numTickets,
+      phone,
+      email,
+      dateTime,
+      comments,
+      movieImg: movie?.image?.original,
+      id: uniqueId,
+      ratings: movie?.rating?.average,
+      status: movie?.status
+    };
+    addFakeDb(bookedItem);
+    // localStorage.setItem("bookedItem", JSON.stringify(booKedMovie));
     Swal.fire({
       position: "center",
       icon: "success",
@@ -56,6 +80,8 @@ const MovieDetails = () => {
     });
     handleClose();
   };
+
+  console.log(movie);
 
   return (
     <div className="container rounded-xl my-5">
@@ -77,25 +103,38 @@ const MovieDetails = () => {
                 {movie?.name ? movie?.name : "......."}
               </h5>
               <p className="card-text">
+                <span className="fw-bold">Movie Description: </span>
                 {summaryWithoutTags
                   ? summaryWithoutTags
                   : "....................."}
               </p>
               <p className="card-text">
-                Language:{" "}
+                <span className="fw-bold">Language: </span>
                 {movie?.language ? movie?.language : "....................."}
               </p>
-              <p className="card-text">Genres: {movie?.genres}</p>
-              <p className="card-text">Ratings: {movie?.rating?.average}</p>
-              <p className="card-text">Runtime: {movie?.runtime}</p>
-              <p className="card-text">Status: {movie?.status}</p>
               <p className="card-text">
-                Time And Day: {movie?.schedule?.time} {movie?.schedule?.days}
+                <span className="fw-bold">Genres: </span>
+                {movie?.genres?.join(", ")}
+              </p>
+              <p className="card-text">
+                <span className="fw-bold">Ratings:</span>{" "}
+                {movie?.rating?.average}
+              </p>
+              <p className="card-text">
+                <span className="fw-bold">Runtime:</span> {movie?.runtime}
+              </p>
+              <p className="card-text">
+                <span className="fw-bold">Status: </span>
+                {movie?.status}
+              </p>
+              <p className="card-text">
+                <span className="fw-bold">Time And Day: </span>
+                {movie?.schedule?.time} : {movie?.schedule?.days.join(", ")}
               </p>
               <p className="card-text">
                 OfficialSite:{" "}
                 <Link className="btn-link" to={movie?.officialSite}>
-                  OfficialSite Link
+                  {movie?.name}
                 </Link>
               </p>
 
@@ -243,8 +282,11 @@ const MovieDetails = () => {
         </Modal>
       </>
 
-      <div className="text-center" >
-       <Link to="/"> <button className="btn btn-light">Back To Home</button></Link>
+      <div className="text-center">
+        <Link to="/">
+          {" "}
+          <button className="btn btn-light">Back To Home</button>
+        </Link>
       </div>
       <ScrollRestoration></ScrollRestoration>
     </div>

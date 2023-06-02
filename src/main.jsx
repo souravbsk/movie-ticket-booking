@@ -7,6 +7,7 @@ import "./index.css";
 import Main from "./Layout/Main";
 import Home from "./Components/Pages/Home/Home";
 import MovieDetails from "./Components/Pages/MovieDetails/MovieDetails";
+import MyBookings from "./Components/Pages/MyBookings/MyBookings";
 
 const router = createBrowserRouter([
   {
@@ -20,6 +21,10 @@ const router = createBrowserRouter([
       {
         path:"/moviedetails/:id",
         element:<MovieDetails></MovieDetails>
+      },
+      {
+        path:"/mybooking",
+        element:<MyBookings></MyBookings>
       }
     ]
   },
