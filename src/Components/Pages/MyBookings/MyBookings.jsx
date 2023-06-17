@@ -48,7 +48,7 @@ const MyBookings = () => {
           </tr>
         </thead>
         <tbody>
-          {storeTicket.map((movie, i) => (
+          {storeTicket?.map((movie, i) => (
             <tr key={i}>
               <th scope="row">{i + 1}</th>
               <td>
@@ -56,21 +56,21 @@ const MyBookings = () => {
                   height="45px"
                   width="45px"
                   className="border-2 border-info rounded-circle"
-                  src={movie.movieImg}
+                  src={movie?.movieImg}
                   alt=""
                 />
               </td>
-              <td>{movie.movieName}</td>
-              <td>{movie.numTickets}</td>
+              <td>{movie?.movieName}</td>
+              <td>{movie?.numTickets}</td>
               <td>{
-              moment( movie.dateTime).format('MMMM Do YYYY,')
+              moment( movie?.dateTime).format('MMMM Do YYYY,')
              }</td>
-              <td>{movie.phone}</td>
-              <td>{movie.ratings ? movie.ratings : 0}</td>
-              <td>{movie.status}</td>
+              <td>{movie?.phone}</td>
+              <td>{movie?.ratings ? movie?.ratings : 0}</td>
+              <td>{movie?.status}</td>
               <td>
                 <button
-                  onClick={() => handleRemoveTicket(movie.id)}
+                  onClick={() => handleRemoveTicket(movie?.id)}
                   className="btn btn-danger"
                 >
                   <FaTrashAlt></FaTrashAlt>
